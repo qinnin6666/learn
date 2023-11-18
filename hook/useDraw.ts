@@ -6,33 +6,35 @@ export const useDraw = (onDraw: ({ ctx, currentPoint }: Draw) => void) => {
   const drawingRef = useRef(false)
 
   useEffect(() => {
-    const handleDown = (e: MouseEvent) => {
+    const mouseDownHandle = (e: MouseEvent) => {
       drawingRef.current = true
       contextRef.current?.beginPath()
       contextRef.current?.moveTo(e.offsetX, e.offsetY)
       e.preventDefault()
     }
-    const handleUp = (e: MouseEvent) => {
-      drawingRef.current = false
-      contextRef.current?.closePath()
-      e.preventDefault()
+    const mouseUpHandle = (e: MouseEvent) => {
+      if (drawingRef.current) {
+        drawingRef.current = false
+        contextRef.current?.closePath()
+        e.preventDefault()
+      }
     }
 
     const canvas = canvasRef.current
     if (canvas === null) return
 
     contextRef.current = canvas.getContext('2d')
-    canvas.addEventListener('mousedown', handleDown)
-    canvas.addEventListener('mouseup', handleUp)
+    canvas.addEventListener('mousedown', mouseDownHandle)
+    window.addEventListener('mouseup', mouseUpHandle)
 
     return () => {
-      canvas.removeEventListener('mousedown', handleDown)
-      canvas.removeEventListener('mouseup', handleUp)
+      canvas.removeEventListener('mousedown', mouseDownHandle)
+      window.removeEventListener('mouseup', mouseUpHandle)
     }
   }, [])
 
   useEffect(() => {
-    const handleMove = (e: MouseEvent) => {
+    const mouseMoveHandle = (e: MouseEvent) => {
       if (!drawingRef.current || !contextRef.current) return
       onDraw({
         ctx: contextRef.current,
@@ -43,8 +45,8 @@ export const useDraw = (onDraw: ({ ctx, currentPoint }: Draw) => void) => {
     const canvas = canvasRef.current
     if (canvas === null) return
 
-    canvas.addEventListener('mousemove', handleMove)
-    return () => canvas.removeEventListener('mousemove', handleMove)
+    canvas.addEventListener('mousemove', mouseMoveHandle)
+    return () => canvas.removeEventListener('mousemove', mouseMoveHandle)
   }, [onDraw])
 
   const clear = useCallback(() => {
