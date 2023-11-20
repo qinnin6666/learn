@@ -13,11 +13,10 @@ export async function GET(req: NextRequest) {
 
     const url = new URL(req.url)
     console.log(333, url)
-    // return NextResponse.json({ a: 1, b: 2 }, {
-    //     status: 200
-    // })
-
-    redirect('https://nextjs.org/')
+    return NextResponse.json({ a: 1, b: 2 }, {
+        status: 200
+    })
+    // redirect('https://nextjs.org/')
 }
 
 export async function POST(req: NextRequest) {
