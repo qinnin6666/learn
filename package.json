@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate": "drizzle-kit generate:pg"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.0.0",
@@ -14,7 +15,9 @@
     "@trpc/next": "^10.43.6",
     "@trpc/react-query": "^10.43.6",
     "@trpc/server": "^10.43.6",
+    "drizzle-orm": "^0.29.0",
     "next": "14.0.2",
+    "postgres": "^3.4.3",
     "react": "^18",
     "react-color": "^2.19.3",
     "react-dom": "^18",
@@ -26,6 +29,7 @@
     "@types/react-color": "^3.0.10",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "drizzle-kit": "^0.20.4",
     "eslint": "^8",
     "eslint-config-next": "14.0.2",
     "postcss": "^8",
