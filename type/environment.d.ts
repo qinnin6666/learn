@@ -1,11 +1,11 @@
 namespace NodeJS {
   interface ProcessEnv {
     PGHOST: string
-    PGPORT: number
+    PGPORT: string
     PGUSER: string
     PGPASSWORD: string
     PGDATABASE: string
-    PGSSLMODE: boolean
+    PGSSLMODE: string
     NEXT_PUBLIC_TEXT: string
   }
 }

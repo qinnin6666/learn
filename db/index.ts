@@ -1,20 +1,16 @@
+import dotenv from 'dotenv'
 import { drizzle } from 'drizzle-orm/postgres-js'
-import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import postgres from 'postgres'
+import * as schema from './schema'
 
-const host = process.env.PGHOST
-const user = process.env.PGUSER
-const password = process.env.PGPASSWORD
-const database = process.env.PGPASSWORD
+dotenv.config({ path: '.env.local' })
 
-if (!host || !user || password || !database) {
-  throw new Error('环境变量获取失败!')
-}
+export const connection = postgres({
+  host: process.env.PGHOST,
+  port: parseInt(process.env.PGPORT),
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  database: process.env.PGDATABASE
+})
 
-const connectionString = `postgres://${user}:${password}@${host}/${database}`
-
-// const connectionString = 'postgres://postgres:123@0.0.0.0:5434/nest'
-const sql = postgres(connectionString, { max: 1 })
-const db = drizzle(sql)
-
-// await migrate(db, { migrationsFolder: 'drizzle' })
+export const db = drizzle(connection, { schema })
