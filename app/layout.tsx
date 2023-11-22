@@ -11,6 +11,15 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const a =  {
+    host: process.env.PGHOST,
+    port: process.env.PGPORT,
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    database: process.env.PGDATABASE,
+    ssl: process.env.PGSSLMODE
+  }
+  console.log(a)
   return (
     <html lang="en">
       <body className={inter.className}>

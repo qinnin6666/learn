@@ -7,6 +7,9 @@ import { ChromePicker } from 'react-color'
 const Page = () => {
   const [color, setColor] = useState<string>('#000')
 
+  const text = process.env.NEXT_PUBLIC_TEXT
+  console.log(text)
+
   const drawLine = useCallback(
     ({ ctx, currentPoint }: Draw) => {
       ctx.lineTo(currentPoint.x, currentPoint.y)
