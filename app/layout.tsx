@@ -17,9 +17,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     user: process.env.PGUSER,
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE,
-    ssl: process.env.PGSSLMODE
   }
-  console.log(a)
+  // console.log(a)
   return (
     <html lang="en">
       <body className={inter.className}>
