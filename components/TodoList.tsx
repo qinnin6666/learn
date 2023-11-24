@@ -6,19 +6,19 @@ import { serverClient } from '../app/_trpc/serverClient'
 export default function TodoList({
   initialTodos
 }: {
-  initialTodos: Awaited<ReturnType<(typeof serverClient)['getTodos']>>
+  initialTodos: Awaited<ReturnType<(typeof serverClient.todo)['getTodos']>>
 }) {
-  const getTodos = trpc.getTodos.useQuery(undefined, {
+  const getTodos = trpc.todo.getTodos.useQuery(undefined, {
     initialData: initialTodos,
     refetchOnMount: false,
     refetchOnReconnect: false
   })
-  const addTodo = trpc.addTodo.useMutation({
+  const addTodo = trpc.todo.addTodo.useMutation({
     onSettled: () => {
       getTodos.refetch()
     }
   })
-  const setDone = trpc.setDone.useMutation({
+  const setDone = trpc.todo.setDone.useMutation({
     onSettled: () => {
       getTodos.refetch()
     }

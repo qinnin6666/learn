@@ -1,21 +1,10 @@
 import { z } from 'zod'
-import { publicProcedure, router } from './trpc'
+import { publicProcedure, router } from '../trpc'
 import { db } from '@/db'
 import { todos } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
-export const appRouter = router({
-  hello: publicProcedure
-    .input(
-      z.object({
-        text: z.string()
-      })
-    )
-    .query(opts => {
-      return {
-        greeting: `hello ${opts.input.text}`
-      }
-    }),
+export const todoRouter = router({
   getTodos: publicProcedure.query(async () => {
     return await db.select().from(todos).orderBy(todos.id)
   }),
@@ -34,6 +23,3 @@ export const appRouter = router({
       return true
     })
 })
-
-// export type definition of API
-export type AppRouter = typeof appRouter

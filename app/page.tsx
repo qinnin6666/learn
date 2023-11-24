@@ -5,7 +5,7 @@ import { serverClient } from './_trpc/serverClient'
 const session = null
 
 export default async function Home() {
-  const todos = await serverClient.getTodos()
+  const todos = await serverClient.todo.getTodos()
 
   if (session === '333') throw new AuthRequiredError()
   return (
