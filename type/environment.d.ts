@@ -6,5 +6,6 @@ namespace NodeJS {
     PGPASSWORD: string
     PGDATABASE: string
     NEXT_PUBLIC_TEXT: string
+    JWT_SECRET: string
   }
 }

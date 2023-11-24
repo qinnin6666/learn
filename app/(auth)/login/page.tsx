@@ -25,7 +25,18 @@ function Login() {
       password: event.currentTarget.password.value
     }
 
-    await login.mutateAsync(payload)
+    // await login.mutateAsync(payload)
+    const res = await fetch('/api/auth/login', {
+      method: 'post',
+      body: JSON.stringify(payload)
+    })
+    const data = await res.json()
+
+    if (data.status === 200) {
+      push('/dashboard')
+    } else {
+      alert(data.message)
+    }
   }
 
   return (
