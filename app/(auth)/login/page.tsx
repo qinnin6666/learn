@@ -32,7 +32,7 @@ function Login() {
     })
     const data = await res.json()
 
-    if (data.status === 200) {
+    if (res.status === 200) {
       push('/dashboard')
     } else {
       alert(data.message)
