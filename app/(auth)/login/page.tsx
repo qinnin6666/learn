@@ -1,19 +1,22 @@
 'use client'
 import { trpc } from '@/app/_trpc/client'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 function Login() {
   const { push } = useRouter()
+
+  const [error, setError] = useState('')
   const login = trpc.user.login.useMutation({
     onMutate: () => {
-      console.log(111)
+      console.log('login')
     },
     onSuccess: data => {
-      console.log(data)
+      localStorage.setItem('user', JSON.stringify(data))
       push('/dashboard')
     },
-    onError: err => {
-      console.log(999, err.message)
+    onError(err) {
+      setError(err.message)
     }
   })
 
@@ -25,24 +28,12 @@ function Login() {
       password: event.currentTarget.password.value
     }
 
-    // await login.mutateAsync(payload)
-    const res = await fetch('/api/auth/login', {
-      method: 'post',
-      body: JSON.stringify(payload)
-    })
-    const data = await res.json()
-
-    if (data.status === 200) {
-      push('/dashboard')
-    } else {
-      alert(data.message)
-    }
+    await login.mutateAsync(payload)
   }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1>Nextjs authentication JWT verify http cookie only</h1>
-
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">Sign UP</h3>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8">
         <div>
           <label htmlFor="username" className="inline-block w-24">
@@ -68,6 +59,8 @@ function Login() {
             className="border rounded border-black"
           />
         </div>
+
+        {error && <div className="text-red-500">{error}</div>}
 
         <button type="submit" className="p-2 bg-orange-600 text-white w-fit rounded self-center">
           Submit
