@@ -1,8 +1,9 @@
 import { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
 
-export async function createContext(opts: FetchCreateContextFnOptions) {
+export async function createContext({ req, resHeaders }: FetchCreateContextFnOptions) {
   return {
-    token: 111
+    req,
+    resHeaders
   }
 }
 

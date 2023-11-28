@@ -1,22 +1,18 @@
 'use client'
 import { trpc } from '@/app/_trpc/client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 
 function Login() {
   const { push } = useRouter()
 
-  const [error, setError] = useState('')
-  const login = trpc.user.login.useMutation({
-    onMutate: () => {
-      console.log('login')
-    },
+  const {
+    mutate: login,
+    isError,
+    error
+  } = trpc.user.login.useMutation({
     onSuccess: data => {
       localStorage.setItem('user', JSON.stringify(data))
       push('/dashboard')
-    },
-    onError(err) {
-      setError(err.message)
     }
   })
 
@@ -28,7 +24,7 @@ function Login() {
       password: event.currentTarget.password.value
     }
 
-    await login.mutateAsync(payload)
+    await login(payload)
   }
 
   return (
@@ -39,28 +35,16 @@ function Login() {
           <label htmlFor="username" className="inline-block w-24">
             Username
           </label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            required
-            className="border rounded border-black"
-          />
+          <input type="text" id="username" name="username" required className="border rounded border-black" />
         </div>
         <div>
           <label htmlFor="password" className="inline-block w-24">
             Password
           </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            className="border rounded border-black"
-          />
+          <input type="password" id="password" name="password" required className="border rounded border-black" />
         </div>
 
-        {error && <div className="text-red-500">{error}</div>}
+        {isError && <div className="text-red-500">登陆失败,{error.message}</div>}
 
         <button type="submit" className="p-2 bg-orange-600 text-white w-fit rounded self-center">
           Submit

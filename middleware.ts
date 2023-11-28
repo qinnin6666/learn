@@ -1,28 +1,27 @@
-import { NextResponse } from 'next/server'
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { verifyToken as verify } from './lib/auth'
 
-export function middleware(request: NextRequest) {
-    // console.log(request)
-    // const { pathname, searchParams } = request.nextUrl
-    // console.log({ pathname, a: searchParams.get('a') })
-    return NextResponse.next()
-    // return NextResponse.redirect(new URL('/dash', request.url))
-    // return NextResponse.rewrite(new URL('/dash', request.url))
+export async function middleware(req: NextRequest) {
+  const token = req.cookies.get('user-token')?.value
+  const verifyToken =
+    token &&
+    (await verify(token).catch(err => {
+      console.log(err)
+    }))
+  console.log(222)
 
-    // let cookies = request.cookies.getAll()
-    // console.log(cookies)
-    // const res = NextResponse.next()
-    // res.cookies.set('vercel', 'fast')
-    // res.cookies.set({
-    //     name: 'vercel',
-    //     value: 'fast',
-    //     path: '/',
-    // })
-    // return res
+  if (req.nextUrl.pathname.startsWith('/login') && !verifyToken) {
+    return
+  }
 
-    // return NextResponse.json({message: 'hello from middleware'})
+  if (req.url.includes('/login') && verifyToken) {
+    return NextResponse.redirect(new URL('/dashboard', req.url))
+  }
+  if (!verifyToken) {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
 }
 
 export const config = {
-    matcher: '/dashboard/:path*',
+  matcher: ['/dashboard', '/login']
 }

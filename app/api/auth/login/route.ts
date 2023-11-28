@@ -1,7 +1,7 @@
-import { sign } from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
-import { COOKIE_NAME, MAX_AGE } from '../constants'
+import { generateToken } from '@/lib/auth'
+import { COOKIE_MAX_AGE, COOKIE_NAME } from '@/lib/constants';
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
@@ -11,13 +11,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: new Error('Unauthorized') }, { status: 401 })
   }
 
-  const token = sign({ username }, process.env.JWT_SECRET, { expiresIn: MAX_AGE })
+  const token = await generateToken(username)
 
   cookies().set(COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
-    maxAge: MAX_AGE,
+    maxAge: COOKIE_MAX_AGE,
     path: '/'
   })
   return NextResponse.json({ message: 'Authenticated' }, { status: 200 })

@@ -1,19 +1,18 @@
 'use client'
 import { trpc } from '@/app/_trpc/client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 
 function Singup() {
   const { push } = useRouter()
 
-  const [error, setError] = useState('')
-  const register = trpc.user.register.useMutation({
+  const {
+    mutate: register,
+    isError,
+    error
+  } = trpc.user.register.useMutation({
     onSuccess(data) {
       localStorage.setItem('user', JSON.stringify(data))
       push('/dashboard')
-    },
-    onError(error) {
-      setError(error.message)
     }
   })
 
@@ -26,7 +25,7 @@ function Singup() {
       role: event.currentTarget.roles.value
     }
 
-    await register.mutate(payload)
+    await register(payload)
   }
 
   return (
@@ -55,7 +54,7 @@ function Singup() {
           </select>
         </div>
 
-        {error && <div className="text-red-500">{error}</div>}
+        {isError && <div className="text-red-500">登陆失败,{error.message}</div>}
 
         <button type="submit" className="p-2 bg-orange-600 text-white w-fit rounded self-center">
           Submit
