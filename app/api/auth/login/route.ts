@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { generateToken } from '@/lib/auth'
-import { COOKIE_MAX_AGE, COOKIE_NAME } from '@/lib/constants';
+import { COOKIE_MAX_AGE, COOKIE_NAME } from '@/lib/constants'
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: new Error('Unauthorized') }, { status: 401 })
   }
 
-  const token = await generateToken(username)
+  const token = await generateToken(username, 'admin')
 
   cookies().set(COOKIE_NAME, token, {
     httpOnly: true,

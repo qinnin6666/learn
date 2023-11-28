@@ -1,10 +1,11 @@
 import { SignJWT, jwtVerify } from 'jose'
 import { nanoid } from 'nanoid'
 
-interface UserJWTPayload {
+export interface UserJWTPayload {
   jti: string
   iat: number
   iss: string
+  isAdmin: string
 }
 
 function getJwtSecretKey() {
@@ -15,8 +16,8 @@ function getJwtSecretKey() {
   return secret
 }
 
-export async function generateToken(username: string) {
-  return await new SignJWT({ 'urn:example:claim': true })
+export async function generateToken(username: string, isAdmin: string) {
+  return await new SignJWT({ isAdmin })
     .setProtectedHeader({ alg: 'HS256' })
     .setJti(nanoid())
     .setIssuedAt()
@@ -28,7 +29,7 @@ export async function generateToken(username: string) {
 export async function verifyToken(token: string) {
   try {
     const verifyied = await jwtVerify(token, new TextEncoder().encode(getJwtSecretKey()))
-    return verifyied.payload as UserJWTPayload
+    return verifyied.payload as unknown as UserJWTPayload
   } catch (error) {
     throw new Error('your token is expired')
   }

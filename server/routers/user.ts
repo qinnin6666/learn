@@ -51,7 +51,7 @@ export const userRouter = router({
           .returning()
 
         const u = backData[0]
-        const token = await generateToken(u.name as string)
+        const token = await generateToken(u.name, u.role)
         setCookie(token)
         return u
       } catch (err) {
@@ -84,7 +84,7 @@ export const userRouter = router({
 
     const findUser = findUsers[0]
     if (await await verify(findUser.password as string, password)) {
-      const token = await generateToken(findUser.name as string)
+      const token = await generateToken(findUser.name, findUser.role)
       setCookie(token)
       return findUser
     }

@@ -8,7 +8,6 @@ export async function middleware(req: NextRequest) {
     (await verify(token).catch(err => {
       console.log(err)
     }))
-  console.log(222)
 
   if (req.nextUrl.pathname.startsWith('/login') && !verifyToken) {
     return

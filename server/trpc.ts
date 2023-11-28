@@ -4,18 +4,12 @@ import { Context } from './context'
 const t = initTRPC.context<Context>().create()
 
 const isAuthed = t.middleware(async ({ ctx, next }) => {
-  const req = ctx.req
-  console.log(req, 111)
+  const { isAdmin } = ctx
 
-  //   if (!user || !user.id) {
-  //     throw new TRPCError({ code: 'UNAUTHORIZED' })
-  //   }
-
-  return next({
-    ctx: {
-      user: 222
-    }
-  })
+  if (isAdmin !== 'admin') {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: '没有权限' })
+  }
+  return next()
 })
 
 export const router = t.router
