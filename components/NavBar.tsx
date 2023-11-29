@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React, { FC } from 'react'
+import Logout from './Logout'
 
 interface NavBarProps {}
 
@@ -22,6 +23,7 @@ const NavBar: FC<NavBarProps> = ({}) => {
         <div className="absolute right-0 top-0 h-full flex justify-end items-center gap-1">
           <LinkButton href="/login" />
           <LinkButton href="/signup" />
+          <Logout />
         </div>
       </div>
     </nav>

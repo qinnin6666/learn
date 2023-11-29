@@ -4,35 +4,39 @@ import { useState } from 'react'
 import { serverClient } from '../app/_trpc/serverClient'
 
 export default function TodoList() {
-//   {
-//   initialTodos
-// }: {
-//   initialTodos: Awaited<ReturnType<(typeof serverClient.todo)['getTodos']>>
-// }
-  const getTodos = trpc.todo.getTodos.useQuery(undefined, {
-    // initialData: initialTodos,
-    refetchOnMount: false,
-    refetchOnReconnect: false
+  //   {
+  //   initialTodos
+  // }: {
+  //   initialTodos: Awaited<ReturnType<(typeof serverClient.todo)['getTodos']>>
+  // }
+  const {
+    data: todoList,
+    isError,
+    error,
+    refetch
+  } = trpc.todo.getTodos.useQuery(undefined, {
+    retry: false,
+    refetchOnWindowFocus: false
   })
   const addTodo = trpc.todo.addTodo.useMutation({
     onSettled: () => {
-      getTodos.refetch()
+      refetch()
     }
   })
   const setDone = trpc.todo.setDone.useMutation({
     onSettled: () => {
-      getTodos.refetch()
+      refetch()
     }
   })
 
   const [content, setContent] = useState('')
 
-  if (!getTodos.data) return null
+  if (isError) return <div>{error.message}</div>
 
   return (
     <div>
       <div className="text-black my-5 text-3xl">
-        {getTodos?.data?.map(todo => (
+        {todoList?.map(todo => (
           <div key={todo.id} className="flex gap-3 items-center">
             <input
               id={`check-${todo.id}`}
@@ -67,7 +71,8 @@ export default function TodoList() {
               addTodo.mutate(content)
               setContent('')
             }
-          }}>
+          }}
+        >
           Add Todo
         </button>
       </div>

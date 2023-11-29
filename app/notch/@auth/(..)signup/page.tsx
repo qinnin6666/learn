@@ -8,7 +8,7 @@ function Singup2() {
 
   return (
     <Modal>
-      <div className="bg-white max-h-[360px] rounded relative">
+      <div className="bg-white max-h-[460px] rounded relative">
         <Singup />
         <span
           onClick={() => router.back()}

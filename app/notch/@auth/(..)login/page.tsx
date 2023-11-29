@@ -7,7 +7,7 @@ export default function Login2() {
   const router = useRouter()
   return (
     <Modal>
-      <div className="bg-white max-h-[360px] rounded relative">
+      <div className="bg-white max-h-[460px] rounded relative">
         <Login />
         <span
           onClick={() => router.back()}

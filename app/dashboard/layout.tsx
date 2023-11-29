@@ -1,5 +1,5 @@
 'use client'
-
+import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -29,10 +29,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div>
+    <MaxWidthWrapper>
       <div>hello {user}</div>
       <div>{children}</div>
-    </div>
+    </MaxWidthWrapper>
   )
 }
 
