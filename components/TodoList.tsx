@@ -3,20 +3,22 @@ import { trpc } from '@/app/_trpc/client'
 import { useState } from 'react'
 import { serverClient } from '../app/_trpc/serverClient'
 
-export default function TodoList() {
-  //   {
-  //   initialTodos
-  // }: {
-  //   initialTodos: Awaited<ReturnType<(typeof serverClient.todo)['getTodos']>>
-  // }
+export default function TodoList({
+  initialTodos
+}: {
+  initialTodos: Awaited<ReturnType<(typeof serverClient.todo)['getTodos']>>
+}) {
   const {
     data: todoList,
     isError,
     error,
     refetch
   } = trpc.todo.getTodos.useQuery(undefined, {
+    initialData: initialTodos,
     retry: false,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false
   })
   const addTodo = trpc.todo.addTodo.useMutation({
     onSettled: () => {

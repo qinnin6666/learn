@@ -1,11 +1,10 @@
 import { z } from 'zod'
-import { protectedProcedure, router } from '../trpc'
+import { protectedProcedure, publicProcedure, router } from '../trpc'
 import { todos } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
 export const todoRouter = router({
-  getTodos: protectedProcedure.query(async ({ ctx }) => {
-    console.log(ctx.db)
+  getTodos: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.select().from(todos).orderBy(todos.id)
   }),
   addTodo: protectedProcedure.input(z.string()).mutation(async ({ctx, input}) => {
