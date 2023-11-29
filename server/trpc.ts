@@ -5,6 +5,7 @@ const t = initTRPC.context<Context>().create()
 
 const isAuthed = t.middleware(async ({ ctx, next }) => {
   const { isAdmin } = ctx
+  console.log(12, isAdmin)
 
   if (isAdmin !== 'admin') {
     throw new TRPCError({ code: 'UNAUTHORIZED', message: '没有权限' })

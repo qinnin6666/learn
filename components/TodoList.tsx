@@ -3,13 +3,14 @@ import { trpc } from '@/app/_trpc/client'
 import { useState } from 'react'
 import { serverClient } from '../app/_trpc/serverClient'
 
-export default function TodoList({
-  initialTodos
-}: {
-  initialTodos: Awaited<ReturnType<(typeof serverClient.todo)['getTodos']>>
-}) {
+export default function TodoList() {
+//   {
+//   initialTodos
+// }: {
+//   initialTodos: Awaited<ReturnType<(typeof serverClient.todo)['getTodos']>>
+// }
   const getTodos = trpc.todo.getTodos.useQuery(undefined, {
-    initialData: initialTodos,
+    // initialData: initialTodos,
     refetchOnMount: false,
     refetchOnReconnect: false
   })
