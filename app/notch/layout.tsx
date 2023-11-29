@@ -12,7 +12,7 @@ export default function RootLayout(props: {
   auth: React.ReactNode
 }) {
   return (
-    <div className="grid grid-cols-4 gap-4 h-72 relative">
+    <div className="max-w-4xl mx-auto h-[450px] mt-32 grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-2 justify-center content-center px-2">
       {props.children}
       {props.team}
       {props.analytics}

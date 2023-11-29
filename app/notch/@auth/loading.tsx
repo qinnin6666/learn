@@ -1,3 +1,8 @@
 export default function Loading() {
-  return <div>auth loading</div>
+  // return (
+  //   <div className=" bg-rose-800 text-white rounded flex justify-center items-center">
+  //     auth loading
+  //   </div>
+  // )
+  return null
 }

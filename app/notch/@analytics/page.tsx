@@ -1,6 +1,6 @@
 async function Analytics() {
   await new Promise(resolve => setTimeout(() => resolve(3000), 3000))
-  return <div className="w-72 h-72 bg-yellow-800 border-2 border-red-600">Analytics</div>
+  return <div className="bg-yellow-800 text-white rounded flex justify-center items-center">Analytics</div>
 }
 
 export default Analytics

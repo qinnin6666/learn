@@ -1,3 +1,3 @@
 export default function Loading() {
-  return <div className="border-2 border-red-600">analytics loading</div>
+  return <div className="bg-yellow-800 text-white rounded flex justify-center items-center">analytics loading</div>
 }
