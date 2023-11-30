@@ -14,3 +14,7 @@ export function loginSetCookie(token: string) {
 export function logoutClearCookie() {
   cookies().delete(COOKIE_NAME)
 }
+
+export function getCookieToken() {
+  return cookies().get(COOKIE_NAME)
+}

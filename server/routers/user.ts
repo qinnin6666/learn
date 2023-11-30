@@ -5,8 +5,8 @@ import { hash, verify } from 'argon2'
 import { user } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { TRPC_ERROR_CODE_KEY } from '@trpc/server/rpc'
-import { generateToken } from '@/lib/auth'
-import { loginSetCookie, logoutClearCookie } from '@/lib/cookie'
+import { generateToken, verifyToken } from '@/lib/auth'
+import { getCookieToken, loginSetCookie, logoutClearCookie } from '@/lib/cookie'
 
 const Role = z.union([z.literal('admin'), z.literal('customer')])
 
@@ -93,5 +93,41 @@ export const userRouter = router({
   }),
   logout: publicProcedure.mutation(() => {
     logoutClearCookie()
-  })
+  }),
+  me: publicProcedure
+    .output(
+      z.object({
+        id: z.number(),
+        name: z.string(),
+        role: Role
+      })
+    )
+    .query(async ({ ctx }) => {
+      const token = getCookieToken()
+      if (!token) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: '未登录'
+        })
+      }
+
+      try {
+        const jwtpayload = await verifyToken(token.value)
+  
+        const findUsers = await ctx.db.select().from(user).where(eq(user.name, jwtpayload.iss))
+        if (findUsers.length === 0) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: '未找到账号'
+          })
+        }
+
+        return findUsers[0]
+      } catch (err) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: (err as Error).message
+        })
+      }
+    })
 })
