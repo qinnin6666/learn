@@ -11,8 +11,8 @@ function Singup() {
     error
   } = trpc.user.register.useMutation({
     onSuccess(data) {
-      localStorage.setItem('user', JSON.stringify(data))
       push('/dashboard')
+      localStorage.setItem('user', JSON.stringify(data))
     }
   })
 

@@ -1,8 +1,14 @@
 'use client'
 import { trpc } from '@/app/_trpc/client'
+import { useRouter } from 'next/navigation'
 
 const Logout = () => {
-  const { mutate: logout } = trpc.user.logout.useMutation()
+  const router = useRouter()
+  const { mutate: logout } = trpc.user.logout.useMutation({
+    onSuccess() {
+      router.refresh()
+    }
+  })
   return (
     <button
       onClick={() => logout()}

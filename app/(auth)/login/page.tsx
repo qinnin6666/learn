@@ -11,8 +11,8 @@ function Login() {
     error
   } = trpc.user.login.useMutation({
     onSuccess: data => {
-      localStorage.setItem('user', JSON.stringify(data))
       push('/dashboard')
+      localStorage.setItem('user', JSON.stringify(data))
     }
   })
 
